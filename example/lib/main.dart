@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:genbase/genbase.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding
+      .ensureInitialized(); // Ensure plugin services are initialized.
+  Genbase.projectKey = 'fe48929e-4ea4-4231-ab1c-53850cde9e3d';
+  await Genbase.initialize();
   runApp(const MyApp());
 }
 
@@ -13,24 +17,22 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final _genbase = Genbase();
-  String connection_status = "Not Connected";
-
   @override
   void initState() {
     super.initState();
-    print(_genbase.checkConnection);
-    _genbase.checkConnection().then((response) {
-      if (response.statusCode == 200) {
-        setState(() {
-          connection_status = "Connected";
-        });
-      } else {
-        setState(() {
-          connection_status = "Not Connected";
-        });
-      }
-    });
+  }
+
+  Future<OpenAIChatCompletionModel> sample() async {
+    OpenAIChatCompletionModel completion =
+        await Genbase.openai.chat.create(model: 'gpt-3.5-turbo', messages: [
+      OpenAIChatCompletionChoiceMessageModel(
+          role: OpenAIChatMessageRole.assistant,
+          content: [
+            OpenAIChatCompletionChoiceMessageContentItemModel.text(
+                'Hello, how are you?')
+          ])
+    ]);
+    return completion;
   }
 
   @override
@@ -41,7 +43,7 @@ class _MyAppState extends State<MyApp> {
           title: const Text('Plugin example app'),
         ),
         body: Center(
-          child: Text('Connection Status: $connection_status\n'),
+          child: Text('Connection Status: '),
         ),
       ),
     );

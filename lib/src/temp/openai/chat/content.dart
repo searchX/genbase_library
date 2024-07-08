@@ -23,8 +23,8 @@ class OpenAIChatCompletionMessageContentItem {
 
   /// This is used to convert a [Map<String, dynamic>] object to a [OpenAIChatCompletionMessageContentItem] object.
   factory OpenAIChatCompletionMessageContentItem.fromMap(
-      Map<String, dynamic> asMap,
-      ) {
+    Map<String, dynamic> asMap,
+  ) {
     return OpenAIChatCompletionMessageContentItem._(
       type: asMap['type'],
       text: asMap['text'],
@@ -43,8 +43,8 @@ class OpenAIChatCompletionMessageContentItem {
 
   /// Represents a image content item factory, which is used to create a image [OpenAIChatCompletionMessageContentItem].
   factory OpenAIChatCompletionMessageContentItem.imageUrl(
-      String imageUrl,
-      ) {
+    String imageUrl,
+  ) {
     return OpenAIChatCompletionMessageContentItem._(
       type: 'image_url',
       imageUrl: {'url': imageUrl},
@@ -52,8 +52,8 @@ class OpenAIChatCompletionMessageContentItem {
   }
 
   factory OpenAIChatCompletionMessageContentItem.imageBase64(
-      String imageBase64,
-      ) {
+    String imageBase64,
+  ) {
     return OpenAIChatCompletionMessageContentItem._(
       type: 'image_base64',
       imageBase64: imageBase64,
@@ -73,8 +73,8 @@ class OpenAIChatCompletionMessageContentItem {
 
   @override
   bool operator ==(
-      covariant OpenAIChatCompletionMessageContentItem other,
-      ) {
+    covariant OpenAIChatCompletionMessageContentItem other,
+  ) {
     if (identical(this, other)) return true;
 
     return other.type == type &&
@@ -85,12 +85,12 @@ class OpenAIChatCompletionMessageContentItem {
 
   @override
   String toString() => switch (type) {
-    'text' =>
-    'OpenAIChatCompletionMessageContentItem(type: $type, text: $text)',
-    'image' =>
-    'OpenAIChatCompletionMessageContentItem(type: $type, imageUrl: $imageUrl)',
-    'image_base64' =>
-    'OpenAIChatCompletionMessageContentItem(type: $type, imageBase64: $imageBase64)',
-    _ => 'OpenAIChatCompletionMessageContentItem(type: $type)',
-  };
+        'text' =>
+          'OpenAIChatCompletionMessageContentItem(type: $type, text: $text)',
+        'image' =>
+          'OpenAIChatCompletionMessageContentItem(type: $type, imageUrl: $imageUrl)',
+        'image_base64' =>
+          'OpenAIChatCompletionMessageContentItem(type: $type, imageBase64: $imageBase64)',
+        _ => 'OpenAIChatCompletionMessageContentItem(type: $type)',
+      };
 }

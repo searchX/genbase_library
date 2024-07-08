@@ -1,59 +1,54 @@
-import 'package:flutter/foundation.dart';
-import 'package:genbase/src/instances/chat/chat.dart';
-import 'package:genbase/src/networking/header.dart';
-import 'package:http/http.dart' as http;
 import 'dart:convert';
-export './src/openai/chat/export.dart';
+
+import 'package:genbase/src/openai/dart_openai.dart';
+import 'package:genbase/src/openai/src/core/constants/config.dart';
+import 'package:genbase/src/temp/networking/header.dart';
+import 'package:http/http.dart' as http;
+
+export 'src/openai/dart_openai.dart';
 
 class Genbase {
-  late String _internalApiKey;
+  Genbase._();
 
-  String get apiKey => _internalApiKey;
-  String _baseUrl = 'http://172.20.10.6:8000';
+  static final OpenAI _openAiInstance = OpenAI.instance;
+  static String? _internalProjectKey;
+  static String? _token;
 
-  String get baseUrl => _baseUrl;
-
-  set baseUrl(String value) {
-    _baseUrl = value;
+  static set projectKey(String projectKey) {
+    _internalProjectKey = projectKey;
+    OpenAIConfig.baseUrl = "http://172.20.10.6:8000";
   }
 
-  set apiKey(String value) {
-    HeadersBuilder.apiKey = value;
-    _internalApiKey = value;
-  }
-
-  Genbase([String apiKey = '']) {
-    this.apiKey = apiKey;
-  }
-
-  Future<http.Response> instance() {
-    if (kDebugMode) {
-      print("Genbase is Initialized with id: $_internalApiKey");
+  static Future<void> initialize() async {
+    if (_internalProjectKey == null) {
+      throw Exception("Project key must be set before initialization.");
     }
-    return http.post(Uri.parse('$baseUrl/library/auth/login'),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode({"project_key": _internalApiKey}));
+    final tokenResponse = await _getToken(_internalProjectKey!);
+    if (tokenResponse.statusCode == 200) {
+      _token = jsonDecode(tokenResponse.body)["access_token"];
+      HeadersBuilder.apiKey = _token;
+    } else {
+      throw Exception(
+          "Failed to retrieve token with provided project key. Status code: ${tokenResponse.statusCode}");
+    }
   }
 
-  Future<http.Response> checkConnection() {
-    return http.get(Uri.parse(_baseUrl));
+  static Future<http.Response> _getToken(String projectKey) async {
+    return await http.post(
+      Uri.parse('http://172.20.10.6:8000/project/auth/login'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        "project_key": projectKey,
+      }),
+    );
   }
 
-  OpenAiChat get chat => OpenAiChat();
-
-//
-// Future<http.Response> request() {
-//   OpenAiChat openAiChat = OpenAiChat(model: 'gpt-3.5-turbo', content: [
-//   ]);
-//   print(openAiChat.toMap());
-//   return http.post(
-//     Uri.parse('http://192.168.1.15:8000/openai/chat/completion'),
-//     headers: <String, String>{
-//       'Content-Type': 'application/json; charset=UTF-8',
-//     },
-//     body: jsonEncode(openAiChat.toMap()),
-//   );
-// }
+  static OpenAI get openai {
+    if (_token == null) {
+      throw Exception("Genbase not initialized. Call initialize() first.");
+    }
+    return _openAiInstance;
+  }
 }
