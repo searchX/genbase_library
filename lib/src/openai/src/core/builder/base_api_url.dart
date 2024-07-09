@@ -1,7 +1,5 @@
 import 'package:meta/meta.dart';
 
-import '../constants/config.dart';
-
 /// This class is responsible for  building the API url for all the requests endpoints
 @immutable
 @internal
@@ -14,20 +12,22 @@ abstract class BaseApiUrlBuilder {
   /// if a [query] is provided, it will be added to the url as well.
   @internal
   static String build(String endpoint, [String? id, String? query]) {
-    final baseUrl = OpenAIConfig.baseUrl;
-    final version = OpenAIConfig.version;
+    // final baseUrl = OpenAIConfig.baseUrl;
+    // final version = OpenAIConfig.version;
     final usedEndpoint = _handleEndpointsStarting(endpoint);
-
-    String apiLink = "$baseUrl";
-    apiLink += "/$version";
-    apiLink += "$usedEndpoint";
-
+    //
+    // String apiLink = "$baseUrl";
+    String apiLink = usedEndpoint;
+    // apiLink += "/$version";
+    // apiLink += "$usedEndpoint";
+    //
     if (id != null) {
       apiLink += "/$id";
     } else if (query != null) {
       apiLink += "?$query";
     }
-
+    // return apiLink;
+    //
     return apiLink;
   }
 
