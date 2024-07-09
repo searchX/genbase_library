@@ -5,6 +5,7 @@ void main() async {
   WidgetsFlutterBinding
       .ensureInitialized(); // Ensure plugin services are initialized.
   Genbase.projectKey = 'fe48929e-4ea4-4231-ab1c-53850cde9e3d';
+  Genbase.baseUrl = 'http://192.168.1.11:8000'; // Change the Local Url
   await Genbase.initialize();
   runApp(const MyApp());
 }
@@ -20,6 +21,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+    sample().then(print);
   }
 
   Future<OpenAIChatCompletionModel> sample() async {

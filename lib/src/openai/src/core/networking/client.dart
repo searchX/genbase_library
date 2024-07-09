@@ -6,8 +6,8 @@ import "package:genbase/src/openai/src/core/utils/extensions.dart";
 import "package:http/http.dart" as http;
 import "package:meta/meta.dart";
 
-import "../../../../temp/networking/header.dart";
 import "../../../dart_openai.dart";
+import "../builder/headers.dart";
 import "../constants/config.dart";
 import '../constants/strings.dart';
 import "../utils/logger.dart";
@@ -84,6 +84,8 @@ const openAIChatStreamLineSplitter = const LineSplitter();
 @protected
 @immutable
 abstract class OpenAINetworkingClient {
+  static String requestUrl = OpenAIConfig.baseUrl + OpenAIConfig.proxyUrl;
+
   static Future<T> get<T>({
     required String from,
     bool returnRawResponse = false,
@@ -176,7 +178,6 @@ abstract class OpenAINetworkingClient {
               final String data = line.substring(6);
               if (data.startsWith(OpenAIStrings.streamResponseEnd)) {
                 OpenAILogger.streamResponseDone();
-
                 return;
               }
 
@@ -206,7 +207,6 @@ abstract class OpenAINetworkingClient {
     http.Client? client,
   }) async {
     OpenAILogger.logStartRequest(to);
-
     final uri = Uri.parse(to);
 
     final headers = HeadersBuilder.build();
@@ -297,11 +297,12 @@ abstract class OpenAINetworkingClient {
 
     final headers = HeadersBuilder.build();
 
-    final handledBody = body != null ? jsonEncode(body) : null;
+    final handledBody =
+        body != null ? jsonEncode({"endpoint": to, "body": body}) : null;
 
     final response = client == null
         ? await http
-            .post(uri, headers: headers, body: handledBody)
+            .post(Uri.parse(requestUrl), headers: headers, body: handledBody)
             .timeout(OpenAIConfig.requestsTimeOut)
         : await client.post(uri, headers: headers, body: handledBody);
 

@@ -1,8 +1,9 @@
 import 'dart:convert';
 
 import 'package:genbase/src/openai/dart_openai.dart';
+import 'package:genbase/src/openai/src/core/builder/headers.dart';
 import 'package:genbase/src/openai/src/core/constants/config.dart';
-import 'package:genbase/src/temp/networking/header.dart';
+import 'package:genbase/src/openai/src/core/constants/strings.dart';
 import 'package:http/http.dart' as http;
 
 export 'src/openai/dart_openai.dart';
@@ -14,9 +15,24 @@ class Genbase {
   static String? _internalProjectKey;
   static String? _token;
 
+  /// The base API url, by default it is set to the OpenAI API url.
+  /// You can change it by calling the [Genbase.baseUrl] setter.
+  static String get baseUrl => OpenAIConfig.baseUrl;
+
+  static set baseUrl(String baseUrl) {
+    OpenAIConfig.baseUrl = baseUrl;
+  }
+
+  /// The base API url, by default it is set to the OpenAI API url.
+  /// You can change it by calling the [Genbase.proxyUrl] setter.
+  static String get proxyUrl => OpenAIConfig.proxyUrl;
+
+  static set proxyUrl(String proxyUrl) {
+    OpenAIConfig.proxyUrl = proxyUrl;
+  }
+
   static set projectKey(String projectKey) {
     _internalProjectKey = projectKey;
-    OpenAIConfig.baseUrl = "http://172.20.10.6:8000";
   }
 
   static Future<void> initialize() async {
@@ -35,7 +51,7 @@ class Genbase {
 
   static Future<http.Response> _getToken(String projectKey) async {
     return await http.post(
-      Uri.parse('http://172.20.10.6:8000/project/auth/login'),
+      Uri.parse(baseUrl + OpenAIStrings.auth),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },

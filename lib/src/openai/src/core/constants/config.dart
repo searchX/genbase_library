@@ -25,6 +25,18 @@ abstract class OpenAIConfig {
   /// {@endtemplate}
   static String? _baseUrl;
 
+  /// This is proxy Url that navigate all requests custom endpoint defined by the user
+  static String? _proxyUrl;
+
+  static String get proxyUrl {
+    return _proxyUrl ?? OpenAIStrings.proxyUrl;
+  }
+
+  static set proxyUrl(String? proxyUrl) {
+    _proxyUrl = proxyUrl;
+    OpenAILogger.logProxyUrl(_proxyUrl);
+  }
+
   /// {@template openai_config_version}
   /// This is the version of the API.
   /// {@endtemplate}
@@ -41,4 +53,5 @@ abstract class OpenAIConfig {
     _baseUrl = baseUrl;
     OpenAILogger.logBaseUrl(_baseUrl);
   }
+
 }

@@ -84,9 +84,9 @@ final class OpenAI extends OpenAIClientBase {
   /// The organization id, if set, it will be used in all the requests to the OpenAI API.
   static String? get organization => HeadersBuilder.organization;
 
-  /// The base API url, by default it is set to the OpenAI API url.
-  /// You can change it by calling the [OpenAI.baseUrl] setter.
-  static String get baseUrl => OpenAIConfig.baseUrl;
+  // /// The base API url, by default it is set to the OpenAI API url.
+  // /// You can change it by calling the [OpenAI.baseUrl] setter.
+  // static String get baseUrl => OpenAIConfig.baseUrl;
 
   /// {@macro openai_config_requests_timeOut}
   static set requestsTimeOut(Duration requestsTimeOut) {
@@ -114,9 +114,9 @@ final class OpenAI extends OpenAIClientBase {
   }
 
   /// This is used to set the base url of the OpenAI API, by default it is set to [OpenAIConfig.baseUrl].
-  static set baseUrl(String baseUrl) {
-    OpenAIConfig.baseUrl = baseUrl;
-  }
+  // static set baseUrl(String baseUrl) {
+  //   OpenAIConfig.baseUrl = baseUrl;
+  // }
 
   /// If you have multiple organizations, you can set it's id with this.
   /// once this is set, it will be used in all the requests to the OpenAI API.

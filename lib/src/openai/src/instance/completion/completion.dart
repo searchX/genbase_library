@@ -120,7 +120,7 @@ interface class OpenAICompletion implements OpenAICompletionBase {
     );
 
     return await OpenAINetworkingClient.post<OpenAICompletionModel>(
-      to: BaseApiUrlBuilder.build(endpoint),
+      to: endpoint,
       body: {
         "model": model,
         if (prompt != null) "prompt": prompt,

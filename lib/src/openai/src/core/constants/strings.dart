@@ -9,13 +9,16 @@ import 'endpoints.dart';
 @immutable
 abstract class OpenAIStrings {
   /// This is the capitalized version of "openai" name used in the SDK, like the logger name.
-  static const openai = 'OpenAI';
+  static const openai = 'GenBase';
 
   /// This is the version of the API, in case it changes, it will be updated here.
   static const version = 'v1';
 
   /// This is the default base url for all the requests.
   static const defaultBaseUrl = 'https://api.openai.com';
+
+  /// This is the default proxy url for all the requests.
+  static const proxyUrl = '/proxy';
 
   /// The verb name for the [GET] method.
   static const getMethod = 'GET';
@@ -37,4 +40,6 @@ abstract class OpenAIStrings {
 
   /// {@macro openai_endpoints}
   static final endpoints = OpenAIApisEndpoints.instance;
+
+  static const auth = '/project/auth/login';
 }

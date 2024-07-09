@@ -100,6 +100,15 @@ abstract final class OpenAILogger {
     }
   }
 
+  /// Logs that a proxy url is being set, if the logger is active.
+  static void logProxyUrl([String? proxyUrl]) {
+    if (proxyUrl != null) {
+      log("proxy url set to $proxyUrl");
+    } else {
+      log("proxy url is set");
+    }
+  }
+
   /// Logs that an organization id is being set, if the logger is active.
   static void logOrganization(String? organizationId) {
     log("organization id set to $organizationId");

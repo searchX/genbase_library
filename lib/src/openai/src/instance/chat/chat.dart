@@ -86,7 +86,7 @@ interface class OpenAIChat implements OpenAIChatBase {
     http.Client? client,
   }) async {
     return await OpenAINetworkingClient.post(
-      to: BaseApiUrlBuilder.build(endpoint),
+      to: endpoint,
       body: {
         "model": model,
         "messages": messages.map((message) => message.toMap()).toList(),
