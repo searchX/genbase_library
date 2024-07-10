@@ -84,7 +84,8 @@ const openAIChatStreamLineSplitter = const LineSplitter();
 @protected
 @immutable
 abstract class OpenAINetworkingClient {
-  static String requestUrl = OpenAIConfig.baseUrl + OpenAIConfig.proxyUrl;
+  static final requestUrl =
+      Uri.parse(OpenAIConfig.baseUrl + OpenAIConfig.proxyUrl);
 
   static Future<T> get<T>({
     required String from,
@@ -97,11 +98,13 @@ abstract class OpenAINetworkingClient {
     final uri = Uri.parse(from);
     final headers = HeadersBuilder.build();
 
+    final handledBody = jsonEncode({"method": "GET", "endpoint": from});
+
     final response = client == null
         ? await http
-            .get(uri, headers: headers)
+            .post(requestUrl, headers: headers, body: handledBody)
             .timeout(OpenAIConfig.requestsTimeOut)
-        : await client.get(uri, headers: headers);
+        : await client.post(requestUrl, headers: headers, body: handledBody);
 
     OpenAILogger.logResponseBody(response);
 
@@ -297,14 +300,15 @@ abstract class OpenAINetworkingClient {
 
     final headers = HeadersBuilder.build();
 
-    final handledBody =
-        body != null ? jsonEncode({"endpoint": to, "body": body}) : null;
+    final handledBody = body != null
+        ? jsonEncode({"method": "POST", "endpoint": to, "body": body})
+        : null;
 
     final response = client == null
         ? await http
-            .post(Uri.parse(requestUrl), headers: headers, body: handledBody)
+            .post(requestUrl, headers: headers, body: handledBody)
             .timeout(OpenAIConfig.requestsTimeOut)
-        : await client.post(uri, headers: headers, body: handledBody);
+        : await client.post(requestUrl, headers: headers, body: handledBody);
 
     OpenAILogger.logResponseBody(response);
 
@@ -312,7 +316,7 @@ abstract class OpenAINetworkingClient {
 
     OpenAILogger.startingDecoding();
 
-    Utf8Decoder utf8decoder = Utf8Decoder();
+    Utf8Decoder utf8decoder = const Utf8Decoder();
 
     final convertedBody = utf8decoder.convert(response.bodyBytes);
 
@@ -347,7 +351,7 @@ abstract class OpenAINetworkingClient {
       final clientForUse = client ?? _streamingHttpClient();
       final uri = Uri.parse(to);
       final headers = HeadersBuilder.build();
-      final httpMethod = OpenAIStrings.postMethod;
+      const httpMethod = OpenAIStrings.postMethod;
       final request = http.Request(httpMethod, uri);
       request.headers.addAll(headers);
       request.body = jsonEncode(body);

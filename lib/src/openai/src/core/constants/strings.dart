@@ -15,7 +15,7 @@ abstract class OpenAIStrings {
   static const version = 'v1';
 
   /// This is the default base url for all the requests.
-  static const defaultBaseUrl = 'https://api.openai.com';
+  static const defaultBaseUrl = 'https://genbase.neurotaskai.com';
 
   /// This is the default proxy url for all the requests.
   static const proxyUrl = '/proxy';

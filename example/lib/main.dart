@@ -4,8 +4,7 @@ import 'package:genbase/genbase.dart';
 void main() async {
   WidgetsFlutterBinding
       .ensureInitialized(); // Ensure plugin services are initialized.
-  Genbase.projectKey = '2ed57847-f89a-46a0-8183-ec7b731c0b6f';
-  Genbase.baseUrl = 'http://192.168.1.11:8000'; // Change the Local Url
+  Genbase.projectKey = 'Enter your Project Key'; // Try to use env variables.
   await Genbase.initialize();
   runApp(const MyApp());
 }
@@ -21,7 +20,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    exampleChat().then(print);
+    exampleModel().then(print);
   }
 
   Future<OpenAIChatCompletionModel> exampleChat() async {
@@ -35,6 +34,20 @@ class _MyAppState extends State<MyApp> {
           ])
     ]);
     return completion;
+  }
+
+  Future<List<OpenAIModelModel>> exampleModel() async {
+    List<OpenAIModelModel> models = await Genbase.openai.model.list();
+    OpenAIModelModel firstModel = models.first;
+    OpenAIModelModel model =
+        await Genbase.openai.model.retrieve("text-davinci-003");
+
+    print(model.ownedBy); // ...
+
+    print(firstModel.id); // ...
+    print(firstModel.permission); // ...
+    print(models);
+    return models;
   }
 
   Future<void> exampleImage() async {
