@@ -81,7 +81,7 @@ interface class OpenAIImages implements OpenAIImagesBase {
     String? user,
     http.Client? client,
   }) async {
-    final String generations = "/generations";
+    const String generations = "/generations";
 
     return await OpenAINetworkingClient.post(
       to: BaseApiUrlBuilder.build(endpoint + generations),
@@ -153,7 +153,7 @@ interface class OpenAIImages implements OpenAIImagesBase {
     OpenAIImageResponseFormat? responseFormat,
     String? user,
   }) async {
-    final String edit = "/edits";
+    const String edit = "/edits";
 
     return await OpenAINetworkingClient.imageEditForm<OpenAIImageModel>(
       image: image,
@@ -217,7 +217,7 @@ interface class OpenAIImages implements OpenAIImagesBase {
     OpenAIImageResponseFormat? responseFormat,
     String? user,
   }) async {
-    final String variations = "/variations";
+    const String variations = "/variations";
 
     return await OpenAINetworkingClient.imageVariationForm<OpenAIImageModel>(
       image: image,

@@ -79,7 +79,7 @@ class OpenAIChatStreamLineSplitter
   }
 }
 
-const openAIChatStreamLineSplitter = const LineSplitter();
+const openAIChatStreamLineSplitter = LineSplitter();
 
 @protected
 @immutable
@@ -95,7 +95,6 @@ abstract class OpenAINetworkingClient {
   }) async {
     OpenAILogger.logStartRequest(from);
 
-    final uri = Uri.parse(from);
     final headers = HeadersBuilder.build();
 
     final handledBody = jsonEncode({"method": "GET", "endpoint": from});
@@ -295,8 +294,6 @@ abstract class OpenAINetworkingClient {
     http.Client? client,
   }) async {
     OpenAILogger.logStartRequest(to);
-
-    final uri = Uri.parse(to);
 
     final headers = HeadersBuilder.build();
 

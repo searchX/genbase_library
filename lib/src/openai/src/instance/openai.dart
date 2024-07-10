@@ -26,9 +26,6 @@ final class OpenAI extends OpenAIClientBase {
   /// The singleton instance of [OpenAI].
   static final OpenAI _instance = OpenAI._();
 
-  /// The API key used to authenticate the requests.
-  static String? _internalApiKey;
-
   /// The singleton instance of [OpenAI], make sure to set your OpenAI API key via the [OpenAI.apiKey] setter before accessing the [OpenAI.instance], otherwise it will throw an [Exception].
   /// A [MissingApiKeyException] will be thrown, if the API key is not set.
   static OpenAI get instance {
@@ -102,21 +99,6 @@ final class OpenAI extends OpenAIClientBase {
   // /// final theClientUsedByThePackageAtAnyMoment = OpenAI.httpClient;
   // /// ```
   // static http.Client get httpClient => OpenAINetworkingClient.httpClient;
-
-  /// This is used to initialize the [OpenAI] instance, by providing the API key.
-  /// All the requests will be authenticated using this API key.
-  /// ```dart
-  /// OpenAI.apiKey = "YOUR_API_KEY";
-  /// ```
-  static set apiKey(String apiKey) {
-    HeadersBuilder.apiKey = apiKey;
-    _internalApiKey = apiKey;
-  }
-
-  /// This is used to set the base url of the OpenAI API, by default it is set to [OpenAIConfig.baseUrl].
-  // static set baseUrl(String baseUrl) {
-  //   OpenAIConfig.baseUrl = baseUrl;
-  // }
 
   /// If you have multiple organizations, you can set it's id with this.
   /// once this is set, it will be used in all the requests to the OpenAI API.
