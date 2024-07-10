@@ -1,7 +1,7 @@
 name: genbase
-description: "A new Flutter project."
+description: "The Genbase client package allows developers to seamlessly integrate state-of-the-art AI models like GPT-3 and DALL-E into Dart/Flutter applications, with a lightweight, easy-to-use design that eliminates backend complexities"
 version: 0.0.1
-homepage:
+homepage: https://github.com/searchX/genbase_library.git
 
 environment:
   sdk: '>=3.4.3 <4.0.0'
